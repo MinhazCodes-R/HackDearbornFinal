@@ -3,6 +3,7 @@ import './App.css';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 
+
 function App() {
 
   let startDate, endDate, locationText, priceText;
@@ -12,7 +13,9 @@ function App() {
     console.log(sendData);
 
     try{
-      let data = await axios.get('http://localhost:3001/api',{params:{"data":sendData}});
+      let data = await axios.get('http://127.0.0.1:5000/',{params:{"data":sendData}});
+
+      console.log(data);
 
 
     }
