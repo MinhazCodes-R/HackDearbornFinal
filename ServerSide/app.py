@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])  # Allow CORS for this origin
+CORS(app, origins=["http://localhost:3000"], supports_credentials=True)  # Allow CORS for this origin
 
 @app.route('/', methods=['GET'])
 def handle_data():
@@ -17,6 +17,9 @@ def handle_data():
         print('location is',data[2])
         print('price is',data[3])
         print("\ndone\n")
+
+    else:
+        print("nodata")
 
 
 
