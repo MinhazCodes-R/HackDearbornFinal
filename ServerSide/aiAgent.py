@@ -3,11 +3,16 @@ from uagents import Agent, Context, Model
 import time
 from flask import jsonify
 
+import os
+from dotenv import load_dotenv, dotenv_values
+
+
 import requests
 from openai import OpenAI
 
+load_dotenv()
 
-googlemaps_api = "AIzaSyBJIHd8PeW4z00QIg518MBfJjFXXQWN4q4"
+googlemaps_api = os.getenv("googleMAPAPI")
 
 def get_attr(userLocationName, api=googlemaps_api):
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
@@ -54,13 +59,13 @@ async def handle_post(ctx: Context, req: Request) -> Response:
 
     client = OpenAI(
         # This is the default and can be omitted
-        api_key="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",
+        api_key=os.getenv("gptAPI"),
     )
 
     activity = "eat"
     restrictions = "hallal only"
 
-    message_string = f"pick a 5 good place from the following: {visit_places} and return just the name and rating"
+    message_string = f"pick a 5 good place from the following: {visit_places} and return the name, rating and what makes that location great (DO NOT SAY I)"
 
     chat_completion = client.chat.completions.create(
 

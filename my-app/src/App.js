@@ -182,11 +182,15 @@ function App(){
   const [bottomStyleObject, bottomChanger] = useState({});
 
 
-  const [responsedata,responseUpdate] = useState("");
+  let [responsedata,responseUpdate] = useState([]);
   
 
   // In App.js (React)
   const retrieve = async () => {
+   document.querySelector(".searchButton").style.backgroundColor = "rgb(59 130 246)";
+   setInterval(()=>{document.querySelector(".searchButton").style.backgroundColor = "";},100);
+
+    
    try {
 
       
@@ -195,14 +199,16 @@ function App(){
     const response = await axios.post('http://0.0.0.0:3001/sendrequest', datasend);
  
      console.log("Data back:",JSON.parse(response.data.received_message).text);
-    response = JSON.parse(response.data.received_message).text.split("\n");
-  
 
-    responseUpdate(response);
+      responseUpdate(JSON.parse(response.data.received_message).text.split('\n'));
+      console.log(responsedata)
      bottomChanger({width:"800px", height:"100px"})
+     document.querySelector(".responseBox").classList.remove("showAnimation");
+     document.querySelector(".responseBox").classList.add("showAnimation");
    } catch (error) {
      console.error("Error fetching data:", error);
    }
+
  };
   return (<div>
 
@@ -213,15 +219,12 @@ function App(){
            <div className="inner-form flex my-10">
               <div className="input-field first-wrap">
                  <div style={{backgroundColor: 'rgba(181, 95, 95, 0)', height: '20px', width: '400px', position: 'fixed', transform: 'translateY(-30px)'}}>
-                  <p>Start Date</p>
+                  <p>Name</p>
                  </div>
-                 <input id="search001" className='p-3 m-1' type="date" placeholder="Start Date" onChange={(e)=>{startDate = e.target.value}} />
+                 <input id="search001" className='p-3 m-1' type="input" placeholder="Name" onChange={(e)=>{startDate = e.target.value}} />
                </div>
               <div className="input-field first-wrap">
-                <div style={{backgroundColor: 'rgba(181, 95, 95, 0)', height: '20px', width: '400px', position: 'fixed', transform: 'translateY(-30px)'}}>
-                   <p>End Date</p>
-                 </div>
-                 <input className=' p-3 m-1' id="search002" type="date" placeholder="End Date" onChange={(e)=>{endDate = e.target.value}} />
+      
                </div>
 
                <div className="input-field second-wrap">
@@ -246,7 +249,7 @@ function App(){
 
 
               <div className="input-field third-wrap p-1">
-                <button className="place-content-center h-full w-20 btn-search bg-blue-300" type="button" id="searchbutton" onClick={()=>{retrieve()}}>
+                <button className="place-content-center h-full w-20 btn-search bg-blue-300 searchButton rounded-md" type="button" id="searchbutton" onClick={()=>{retrieve()}}>
                   Search
                 </button>
                 
@@ -258,14 +261,20 @@ function App(){
 
             </div>
           </form>
+          <form action="">
+            <div>Anything Else?</div>
+            <div><input className='rounded-md mt-3 p-2' type="text" style={{display:"inline-block",width:"650px"}} /></div>
+          </form>
 
-          <div className='overflow-y-scroll' style={bottomStyleObject}>
+          <div className='overflow-y-scroll flex my-4 responseBox' style={bottomStyleObject}>
             <ul>
-             
+            {responsedata.map((elementin)=>(
+              <li>{elementin}</li>
+            ))}
 
             </ul>
             
-            {responsedata}</div>
+          </div>
 
       </div>
 

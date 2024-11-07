@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@keyframes transitionFromLeft{
+    from{
+        transform: translateX(-400px);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+.showAnimation{
+    animation-name: transitionFromLeft;
+    animation-duration: 1000ms;
+    animation-fill-mode: forwards;
+}
